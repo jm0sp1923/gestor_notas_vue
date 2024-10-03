@@ -80,7 +80,7 @@
       },
       async fetchEtiquetas() {
         try {
-          const response = await axios.get("http://3.145.21.100/api/etiqueta");
+          const response = await axios.get("http://3.80.254.110/api/etiqueta");
           this.etiquetas = response.data; 
         } catch (error) {
           console.error("Error al obtener las etiquetas:", error);
@@ -126,7 +126,7 @@
           };
   
           const response = await axios.patch(
-            `http://3.145.21.100/api/nota/${this.nota.id}`,
+            `http://3.80.254.110/api/nota/${this.nota.id}`,
             updatedNota,
             { headers }
           );

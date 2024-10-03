@@ -118,7 +118,7 @@
   
     if (this.isFormValid) {
       try {
-        const response = await axios.post("http://3.145.21.100/api/usuario", {
+        const response = await axios.post("http://3.80.254.110/api/usuario", {
           nombre: this.nombre,
           email: this.email,
           password: this.password,
