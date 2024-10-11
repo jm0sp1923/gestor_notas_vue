@@ -116,7 +116,7 @@ export default {
     async fetchEtiquetas() {
       try {
         const token = localStorage.token; // Se utiliza el token almacenado
-        const response = await axios.get("http://3.80.254.110/api/etiqueta", {
+        const response = await axios.get("https://gestornotas.co/api/etiqueta", {
           headers: {
             Authorization: `Bearer ${token}`, // Incluye el token en la petición
           },
@@ -147,7 +147,7 @@ export default {
 
       try {
         const token = localStorage.getItem("token"); // Se utiliza el token almacenado
-        await axios.post("http://3.80.254.110/api/nota", formData, {
+        await axios.post("https://gestornotas.co/api/nota", formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Incluye el token en la petición
             "Content-Type": "multipart/form-data",

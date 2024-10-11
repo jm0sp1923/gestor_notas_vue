@@ -78,7 +78,7 @@ export default {
     },
     async login() {
       try {
-        const response = await axios.post("http://3.80.254.110/api/login", {
+        const response = await axios.post("https://gestornotas.co/api/login", {
           email: this.email,
           password: this.password,
         });

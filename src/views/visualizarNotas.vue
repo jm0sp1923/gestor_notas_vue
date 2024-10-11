@@ -69,7 +69,7 @@ export default {
     async fetchNotas() {
       try {
         const token = localStorage.token;
-        const response = await axios.get("http://3.80.254.110/api/nota", {
+        const response = await axios.get("https://gestornotas.co/api/nota", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -99,7 +99,7 @@ export default {
     async deleteNota(notaId) {
       try {
         const token = localStorage.token;
-        await axios.delete(`http://3.80.254.110/api/nota/${notaId}`, {
+        await axios.delete(`https://gestornotas.co/api/nota/${notaId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
