@@ -87,7 +87,7 @@ export default {
         // Guardar el token y los datos del usuario en localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user)); // Guardar el objeto del usuario
-      
+
         await Swal.fire({
           icon: "success",
           title: "Éxito",
@@ -96,12 +96,21 @@ export default {
         });
         this.$router.push("/visualizarNotas");
       } catch (error) {
-        await Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: error || "Error al iniciar sesión",
-          confirmButtonText: "Aceptar",
-        });
+        if (error.response && error.response.status === 401) {
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Credenciales incorrectas. Intenta nuevamente.",
+            confirmButtonText: "Aceptar",
+          });
+        } else {
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error al iniciar sesión. Intenta nuevamente más tarde.",
+            confirmButtonText: "Aceptar",
+          });
+        }
       }
     },
     goToRegistro() {

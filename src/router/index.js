@@ -23,6 +23,7 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'visualizarNotas',
         component: visualizarNotas,
       },
     ],
@@ -33,6 +34,7 @@ const routes = [
     children: [
       {
         path: '',
+        name: 'crearNota',
         component: crearNota,
       },
     ],
