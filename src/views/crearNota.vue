@@ -47,8 +47,6 @@
 
       <!-- Opcionales -->
       <h4>Opcionales</h4>
-
-            Fecha de vencimiento
             <div class="mb-3">
               <label for="fecha_vencimiento" class="form-label"
                 >Fecha de vencimiento</label
@@ -81,10 +79,12 @@
 
 <script>
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 export default {
   data() {
     return {
+      apiUrl: import.meta.env.VITE_API_URL,
       nota: {
         titulo: "",
         descripcion: "",
@@ -101,22 +101,10 @@ export default {
     this.fetchEtiquetas();
   },
   methods: {
-    mounted() {
-      const user = JSON.parse(localStorage.getItem("user"));
-      console.log("Usuario desde localStorage:", user); // Esto debería mostrar el objeto de usuario
-
-      if (user) {
-        console.log("ID del usuario:", user.id); // Acceder al ID del usuario
-        console.log("Nombre del usuario:", user.nombre); // Acceder al nombre del usuario
-        // Puedes usar `user.email`, `user.created_at`, etc. según sea necesario
-      } else {
-        console.log("No se encontró el usuario en localStorage");
-      }
-    },
     async fetchEtiquetas() {
       try {
         const token = localStorage.token; // Se utiliza el token almacenado
-        const response = await axios.get("https://gestornotas.co/api/etiqueta", {
+        const response = await axios.get(`${this.apiUrl}/api/etiqueta`, {
           headers: {
             Authorization: `Bearer ${token}`, // Incluye el token en la petición
           },
@@ -147,14 +135,21 @@ export default {
 
       try {
         const token = localStorage.getItem("token"); // Se utiliza el token almacenado
-        await axios.post("https://gestornotas.co/api/nota", formData, {
+        await axios.post(`${this.apiUrl}/api/nota`, formData, {
           headers: {
             Authorization: `Bearer ${token}`, // Incluye el token en la petición
             "Content-Type": "multipart/form-data",
           },
         });
-        alert("Nota creada con éxito");
-        // Redirigir o limpiar el formulario si es necesario
+        await Swal.fire({
+            title: 'Nota creada',
+            text: 'La nota ha sido creada correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+          });
+
+        this.$router.push("/visualizarNotas")
+        
       } catch (error) {
         console.error("Error al crear la nota:", error);
       }

@@ -1,11 +1,13 @@
 <template>
   <div class="container h-100">
-    <div class="row justify-content-start align-items-start vh-100 mt-4 flex-wrap mb-6">
+    <div
+      class="row justify-content-start align-items-start vh-100 mt-4 flex-wrap mb-6"
+    >
       <div class="col-md-6 col-lg-4 mb-4" v-for="nota in notas" :key="nota.id">
         <div class="card">
           <img
             v-if="nota.imagen"
-            :src="nota.imagen"
+            :src="`${apiUrl}/storage/${nota.imagen}`"
             class="card-img-top"
             alt="Nota imagen"
           />
@@ -13,23 +15,39 @@
             <h5 class="card-title">{{ nota.titulo }}</h5>
             <p class="card-text">{{ nota.descripcion }}</p>
             <p class="card-text">
-              <small class="text-muted">Creado por: {{ nota.usuario.nombre }}</small>
+              <small class="text-muted"
+                >Creado por: {{ nota.usuario.nombre }}</small
+              >
             </p>
             <p class="card-text">
-              <small class="text-muted">Etiqueta: {{ nota.etiqueta.nombre }}</small>
+              <small class="text-muted"
+                >Etiqueta: {{ nota.etiqueta.nombre }}</small
+              >
             </p>
             <p class="card-text">
-              <small class="text-muted">Fecha de creación: {{ formatFecha(nota.fecha_creacion) }}</small>
+              <small class="text-muted"
+                >Fecha de creación:
+                {{ formatFecha(nota.fecha_creacion) }}</small
+              >
             </p>
             <p class="card-text" v-if="nota.fecha_vencimiento">
-              <small class="text-danger">Fecha de vencimiento: {{ formatFecha(nota.fecha_vencimiento) }}</small>
+              <small class="text-danger"
+                >Fecha de vencimiento:
+                {{ formatFecha(nota.fecha_vencimiento) }}</small
+              >
             </p>
           </div>
           <div class="card-footer">
-            <button class="btn btn-warning btn-sm custom-btn me-2" @click="editNota(nota)">
+            <button
+              class="btn btn-warning btn-sm custom-btn me-2"
+              @click="editNota(nota)"
+            >
               Editar
             </button>
-            <button class="btn btn-danger btn-sm custom-btn" @click="confirmDeleteNota(nota.id)">
+            <button
+              class="btn btn-danger btn-sm custom-btn"
+              @click="confirmDeleteNota(nota.id)"
+            >
               Eliminar
             </button>
           </div>
@@ -41,7 +59,7 @@
     <EditNotaModal
       v-if="selectedNota"
       :nota="selectedNota"
-      @close="selectedNota = null" 
+      @close="selectedNota = null"
       @notaActualizada="handleNotaActualizada"
     />
   </div>
@@ -49,8 +67,8 @@
 
 <script>
 import axios from "axios";
-import Swal from "sweetalert2"; 
-import EditNotaModal from '../modals/EditNotaModal.vue'; 
+import Swal from "sweetalert2";
+import EditNotaModal from "../modals/EditNotaModal.vue";
 
 export default {
   components: {
@@ -58,6 +76,7 @@ export default {
   },
   data() {
     return {
+      apiUrl: import.meta.env.VITE_API_URL,
       notas: [],
       selectedNota: null, // Para almacenar la nota seleccionada para editar
     };
@@ -69,7 +88,7 @@ export default {
     async fetchNotas() {
       try {
         const token = localStorage.token;
-        const response = await axios.get("https://gestornotas.co/api/nota", {
+        const response = await axios.get(`${this.apiUrl}/api/nota`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -84,22 +103,22 @@ export default {
     },
     async confirmDeleteNota(notaId) {
       const { isConfirmed } = await Swal.fire({
-        title: '¿Estás seguro?',
+        title: "¿Estás seguro?",
         text: "Esta acción no se puede deshacer.",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
       });
 
       if (isConfirmed) {
-        this.deleteNota(notaId); // Llama a la función para eliminar la nota
+        this.deleteNota(notaId);
       }
     },
     async deleteNota(notaId) {
       try {
         const token = localStorage.token;
-        await axios.delete(`https://gestornotas.co/api/nota/${notaId}`, {
+        await axios.delete(`${this.apiUrl}/api/nota/${notaId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -107,10 +126,10 @@ export default {
 
         // Muestra un alert de éxito
         await Swal.fire({
-          title: 'Eliminada',
-          text: 'La nota ha sido eliminada correctamente.',
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
+          title: "Eliminada",
+          text: "La nota ha sido eliminada correctamente.",
+          icon: "success",
+          confirmButtonText: "Aceptar",
         });
 
         // Recargar la página después de eliminar
@@ -120,7 +139,7 @@ export default {
       }
     },
     handleNotaActualizada(updatedNota) {
-      const index = this.notas.findIndex(nota => nota.id === updatedNota.id);
+      const index = this.notas.findIndex((nota) => nota.id === updatedNota.id);
       if (index !== -1) {
         this.$set(this.notas, index, updatedNota); // Actualiza la nota en el array
       }

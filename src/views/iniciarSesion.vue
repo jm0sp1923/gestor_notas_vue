@@ -43,6 +43,7 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
+      apiUrl: import.meta.env.VITE_API_URL,
       email: "",
       password: "",
       emailError: null,
@@ -78,7 +79,7 @@ export default {
     },
     async login() {
       try {
-        const response = await axios.post("https://gestornotas.co/api/login", {
+        const response = await axios.post(`${this.apiUrl}/api/login`, {
           email: this.email,
           password: this.password,
         });
@@ -86,11 +87,7 @@ export default {
         // Guardar el token y los datos del usuario en localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user)); // Guardar el objeto del usuario
-        console.log("Usuario almacenado en localStorage:", response.data.user); // Verificar aquí
-
-    
-
-        console.log(localStorage.token);
+      
         await Swal.fire({
           icon: "success",
           title: "Éxito",

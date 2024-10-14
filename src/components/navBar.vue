@@ -29,6 +29,9 @@
             </ul>
           </li>
         </ul>
+        <form class ="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm- buscador" type="search">
+        </form>
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link text-danger" href="#" @click.prevent="logout">Cerrar sesión</a>

@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/api/*"
-  to = "http://3.145.21.100/api/:splat"
+  to = "https://gestornotas.co/api/:splat"
   status = 200
   force = true

@@ -67,6 +67,7 @@
     },
     data() {
       return {
+        apiUrl: import.meta.env.VITE_API_URL,
         etiquetas: [],
         selectedEtiquetaId: "", 
       };
@@ -80,7 +81,7 @@
       },
       async fetchEtiquetas() {
         try {
-          const response = await axios.get("https://gestornotas.co/api/etiqueta");
+          const response = await axios.get(`${this.apiUrl}/api/etiqueta`);
           this.etiquetas = response.data; 
         } catch (error) {
           console.error("Error al obtener las etiquetas:", error);
@@ -126,7 +127,7 @@
           };
   
           const response = await axios.patch(
-            `https://gestornotas.co/api/nota/${this.nota.id}`,
+            `${this.apiUrl}/api/nota/${this.nota.id}`,
             updatedNota,
             { headers }
           );
